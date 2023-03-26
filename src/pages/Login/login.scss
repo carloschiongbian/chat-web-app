@@ -1,0 +1,21 @@
+.layout-login {
+  height: 100.1vh;
+  align-items: center;
+  justify-content: center;
+  background-color: #400d51;
+
+  .modal-login {
+    display: flex;
+    min-width: 30%;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #16213e;
+
+    .modal-login-title {
+      //   margin: 0;
+      color: #ecf9ff;
+      text-align: center;
+    }
+  }
+}
