@@ -1,0 +1,41 @@
+.layout-chat {
+  height: 100vh;
+
+  .sider-header {
+    height: "32px";
+    margin: "16px";
+
+    .sider-header-title {
+      color: #ecf9ff;
+    }
+  }
+
+  .content-layout {
+    margin-bottom: -1px;
+    background-color: #400d51;
+
+    .header-chat {
+      padding: 0;
+      background-color: #16213e;
+    }
+
+    .content-chat {
+      margin: 10px 16px;
+
+      .content-chat-message {
+        max-width: 30%;
+        padding: 1px 10px;
+        width: fit-content;
+        height: fit-content;
+        border-radius: 10px;
+        color: white;
+        background-color: #533483;
+      }
+    }
+
+    .footer-chat {
+      text-align: center;
+      background-color: #16213e;
+    }
+  }
+}
