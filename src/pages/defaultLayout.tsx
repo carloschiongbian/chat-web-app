@@ -42,7 +42,7 @@ const items: MenuItem[] = [
   getItem("Files", "9", <FileOutlined />),
 ];
 
-const DefaultLayout: React.FC = () => {
+const DefaultLayout: React.FC = (children) => {
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
@@ -72,10 +72,6 @@ const DefaultLayout: React.FC = () => {
       <Layout className="site-layout">
         <Header style={{ padding: 0, background: colorBgContainer }} />
         <Content style={{ margin: "0 16px" }}>
-          <Breadcrumb style={{ margin: "16px 0" }}>
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
-          </Breadcrumb>
           <div
             style={{
               padding: 24,
@@ -83,7 +79,6 @@ const DefaultLayout: React.FC = () => {
               background: colorBgContainer,
             }}
           >
-            <Login />
             Bill is a cat.
           </div>
         </Content>

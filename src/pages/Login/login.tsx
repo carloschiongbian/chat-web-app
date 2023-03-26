@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { Layout, Card, Form, Typography, Input, Checkbox, Button } from "antd";
 
@@ -7,8 +8,11 @@ import "./login.scss";
 const { Title } = Typography;
 
 const Login: React.FC = () => {
+  const navigate = useNavigate();
+
   const onFinish = (values: any) => {
     console.log("Success:", values);
+    navigate("/chat");
   };
 
   const onFinishFailed = (errorInfo: any) => {
