@@ -8,7 +8,7 @@ import {
   LoadingOutlined,
 } from "@ant-design/icons";
 import "./chat.scss";
-import { getMessages } from "../../firebase/firestore";
+import { getMessages, sendMessage } from "../../firebase/firestore";
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -36,6 +36,16 @@ const Chat: React.FC = () => {
   const [input, setInput] = useState<any>("");
   const [messages, setMessages] = useState<any>([]);
   const [collapsed, setCollapsed] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const retrieveData = async () => {
+    setIsLoading(true);
+    const response = await getMessages(setMessages);
+
+    if (response.status === 200) {
+      setIsLoading(false);
+    }
+  };
 
   const renderMessageContainer = (message: any, index: any) => {
     return (
@@ -66,8 +76,8 @@ const Chat: React.FC = () => {
     );
   };
 
-  const renderSkeletonContainers = () => {
-    return new Array(3).fill(<Skeleton active paragraph={{ rows: 2 }} />);
+  const handleSendMessage = (message: any) => {
+    sendMessage(message);
   };
 
   const onEnter = (event: any) => {
@@ -79,28 +89,15 @@ const Chat: React.FC = () => {
       (input !== undefined && !whiteSpaceTest.test(input))
     ) {
       const sentMessage = {
+        id: new Date().getTime(),
         fromOthers: false,
         content: !whiteSpaceTest.test(message) ? message : input,
       };
-      setMessages([...messages, sentMessage]);
+      handleSendMessage(sentMessage);
+      retrieveData();
+      // setMessages([...messages, sentMessage]);
       setInput(undefined);
     }
-  };
-
-  const retrieveData = async () => {
-    await getMessages(messages, setMessages);
-    console.log("messages");
-    console.log(messages);
-    // const promise = new Promise((resolve: any, reject: any) => {
-    //   resolve(getMessages());
-    // });
-    // promise
-    //   .then((res: any) => {
-    //     setMessages([...messages, res]);
-    //   })
-    //   .catch((error: any) => {
-    //     console.log(error);
-    //   });
   };
 
   useEffect(() => {
@@ -135,13 +132,15 @@ const Chat: React.FC = () => {
       <Layout className="content-layout">
         <Header className="header-chat" />
 
-        {messages.length > 0 ? (
+        {messages.length > 0 && (
           <Content className="content-chat">
             {messages.map((message: any, index: any) =>
               renderMessageContainer(message, index)
             )}
           </Content>
-        ) : (
+        )}
+
+        {messages.length === 0 && (
           <Content
             className="content-chat-spinner"
             style={{
