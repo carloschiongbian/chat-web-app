@@ -23,6 +23,7 @@ export const getMessages = async (setMessages: any) => {
           fromOthers: doc.data().fromOthers,
         });
       });
+      console.log(temp);
       setMessages(temp.sort((a: any, b: any) => a.id - b.id));
     });
 
