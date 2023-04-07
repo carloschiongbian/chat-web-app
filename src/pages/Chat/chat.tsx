@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Avatar, MenuProps } from "antd";
+import { Avatar, MenuProps, Skeleton, Spin } from "antd";
 import { Row, Layout, Menu, Typography, Input } from "antd";
-import { MessageOutlined, UserOutlined, SendOutlined } from "@ant-design/icons";
+import {
+  MessageOutlined,
+  UserOutlined,
+  SendOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
 import "./chat.scss";
-import { STATIC_MESSAGES } from "../../constant/static";
+import { getMessages } from "../../firebase/firestore";
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -37,6 +42,7 @@ const Chat: React.FC = () => {
       <Row
         className="message-bubble"
         wrap={false}
+        key={index}
         style={{
           justifyContent: message.fromOthers ? "flex-start" : "flex-end",
         }}
@@ -44,13 +50,13 @@ const Chat: React.FC = () => {
         {message.fromOthers ? (
           <>
             <Avatar shape="square" icon={<UserOutlined />} />
-            <Row className="content-chat-message" wrap={true} key={index}>
+            <Row className="content-chat-message" wrap={true}>
               <p>{message.content}</p>
             </Row>
           </>
         ) : (
           <>
-            <Row className="content-chat-message" wrap={true} key={index}>
+            <Row className="content-chat-message" wrap={true}>
               <p>{message.content}</p>
             </Row>
             <Avatar shape="square" icon={<UserOutlined />} />
@@ -58,6 +64,10 @@ const Chat: React.FC = () => {
         )}
       </Row>
     );
+  };
+
+  const renderSkeletonContainers = () => {
+    return new Array(3).fill(<Skeleton active paragraph={{ rows: 2 }} />);
   };
 
   const onEnter = (event: any) => {
@@ -77,12 +87,24 @@ const Chat: React.FC = () => {
     }
   };
 
-  const retrieveMessages = () => {
-    setMessages(STATIC_MESSAGES);
+  const retrieveData = async () => {
+    await getMessages(messages, setMessages);
+    console.log("messages");
+    console.log(messages);
+    // const promise = new Promise((resolve: any, reject: any) => {
+    //   resolve(getMessages());
+    // });
+    // promise
+    //   .then((res: any) => {
+    //     setMessages([...messages, res]);
+    //   })
+    //   .catch((error: any) => {
+    //     console.log(error);
+    //   });
   };
 
   useEffect(() => {
-    retrieveMessages();
+    retrieveData();
   }, []);
 
   return (
@@ -113,18 +135,34 @@ const Chat: React.FC = () => {
       <Layout className="content-layout">
         <Header className="header-chat" />
 
-        <Content className="content-chat">
-          {messages.map((message, index) =>
-            renderMessageContainer(message, index)
-          )}
-        </Content>
+        {messages.length > 0 ? (
+          <Content className="content-chat">
+            {messages.map((message: any, index: any) =>
+              renderMessageContainer(message, index)
+            )}
+          </Content>
+        ) : (
+          <Content
+            className="content-chat-spinner"
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Spin
+              indicator={<LoadingOutlined style={{ fontSize: 40 }} spin />}
+            />
+          </Content>
+        )}
 
         <Row className="chat-input-container" wrap={false}>
           <TextArea
             value={input}
             id="chat-input"
             bordered={false}
-            autoSize={{ minRows: 1, maxRows: 6 }}
+            autoSize={{ minRows: 0, maxRows: 6 }}
             onPressEnter={(event) => onEnter(event)}
             onChange={(event) => setInput(event.target?.value)}
           />
