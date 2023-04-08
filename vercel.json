@@ -1,3 +1,6 @@
 {
-  "routes": [{ "handle": "filesystem" }, { "src": "/.*", "dest": "/main.tsx" }]
+  "routes": [
+    { "src": "/chat", "dest": "/chat" },
+    { "src": "/[^.]+", "dest": "/", "status": 200 }
+  ]
 }
