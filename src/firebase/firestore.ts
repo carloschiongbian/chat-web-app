@@ -8,7 +8,7 @@ const db = getFirestore(app);
 const messagesRef = collection(db, "messages");
 
 export const sendMessage = (message: any) => {
-  console.log(message);
+  console.log("message: ", message);
   addDoc(messagesRef, { ...message });
 };
 
