@@ -19,12 +19,15 @@ export const getMessages = async (setMessages: any) => {
       snapshot.docs.map((doc: any) => {
         temp.push({
           id: new Date().getTime(),
+          date: doc.data().date,
           content: doc.data().content,
           fromOthers: doc.data().fromOthers,
         });
       });
       console.log(temp);
-      setMessages(temp.sort((a: any, b: any) => a.id - b.id));
+      setMessages(
+        temp.sort((a: any, b: any) => a.date.getTime() - b.date.getTime())
+      );
     });
 
     return {
