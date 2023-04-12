@@ -1,5 +1,0 @@
-{
-  "routes": [
-    { "src": "/[^.]+", "dest": "/src/pages/Chat/chat.tsx", "status": 200 }
-  ]
-}
