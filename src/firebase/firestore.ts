@@ -26,9 +26,7 @@ export const getMessages = async (setMessages: any) => {
         });
       });
 
-      setMessages(
-        temp.sort((a: any, b: any) => a.date.getTime() - b.date.getTime())
-      );
+      setMessages(temp.sort((a: any, b: any) => a.date - b.date));
     });
 
     return {
