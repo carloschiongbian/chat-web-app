@@ -1,5 +1,3 @@
 {
-  "redirects": [
-    { "source": "chat", "destination": "./src/pages/Chat/chat.tsx" }
-  ]
+  "routes": [{ "src": "/[^.]+", "dest": "/", "status": 200 }]
 }
