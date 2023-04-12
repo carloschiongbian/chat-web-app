@@ -90,7 +90,7 @@ const Chat: React.FC = () => {
     ) {
       const sentMessage = {
         id: new Date().getTime(),
-        dateSent: new Date(),
+        date: new Date(),
         fromOthers: false,
         content: !whiteSpaceTest.test(message) ? message : input,
       };

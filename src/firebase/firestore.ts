@@ -8,6 +8,7 @@ const db = getFirestore(app);
 const messagesRef = collection(db, "messages");
 
 export const sendMessage = (message: any) => {
+  console.log(message);
   addDoc(messagesRef, { ...message });
 };
 
@@ -24,7 +25,7 @@ export const getMessages = async (setMessages: any) => {
           fromOthers: doc.data().fromOthers,
         });
       });
-      console.log(temp);
+
       setMessages(
         temp.sort((a: any, b: any) => a.date.getTime() - b.date.getTime())
       );
