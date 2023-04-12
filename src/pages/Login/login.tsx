@@ -12,7 +12,6 @@ import {
   Modal,
 } from "antd";
 import "./login.scss";
-import SignIn from "../../google_login/SignIn";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { addDoc, collection, getDocs, getFirestore } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
