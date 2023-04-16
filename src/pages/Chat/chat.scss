@@ -5,6 +5,14 @@
 .layout-chat {
   height: 100vh;
 
+  .logout-button {
+    background-color: transparent;
+    width: 100% !important;
+    color: white;
+    border: none;
+    outline: none;
+  }
+
   .sider-header {
     height: "32px";
     margin: "16px";
@@ -16,7 +24,7 @@
 
   .content-layout {
     margin-bottom: -1px;
-    background-color: #400d51;
+    background-color: #0b2447;
 
     .header-chat {
       padding: 0;
@@ -46,6 +54,7 @@
 
     .chat-input-container {
       align-items: flex-end;
+      padding-block: 10px;
 
       #chat-input {
         color: #ecf9ff;
@@ -53,7 +62,7 @@
         padding: 15px;
         align-items: center;
         justify-content: center;
-        background-color: #16213e;
+        background-color: #19376d;
       }
 
       .send-button {

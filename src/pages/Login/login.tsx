@@ -1,6 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import {
+  EyeInvisibleOutlined,
+  EyeTwoTone,
+  GoogleOutlined,
+} from "@ant-design/icons";
 import {
   Layout,
   Card,
@@ -10,14 +14,23 @@ import {
   Checkbox,
   Button,
   Modal,
+  Col,
+  Carousel,
+  Row,
 } from "antd";
 import "./login.scss";
-import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  getAuth,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
 import { addDoc, collection, getDocs, getFirestore } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../../firebase/config";
+import { UserContext } from "../../context/context";
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -31,23 +44,17 @@ const Login: React.FC = () => {
   const db = getFirestore(app);
   const usersRef = collection(db, "users");
 
-  const verifyEmailExists = async (user: any) => {
+  const getEmails = async () => {
     const snapshot = await getDocs(usersRef);
-
     return snapshot.docs.map((snapshot: any) => snapshot.data());
-    // getDocs(usersRef).then((snapshot: any) => {
-    //   snapshot.docs.map((doc: any) => {
-    //     return doc.data();
-    //   });
-    // });
   };
 
-  const handleGooglePopup = () => {
+  const handleGoogleSignInPopup = () => {
     signInWithPopup(auth, provider)
       .then((result: any) => {
         const user = result.user;
 
-        verifyEmailExists(user).then((result: any) => {
+        getEmails().then((result: any) => {
           const temp = result.filter((docs: any) => docs.email === user.email);
 
           if (temp.length === 0) {
@@ -56,20 +63,33 @@ const Login: React.FC = () => {
               name: user.displayName,
               uid: user.uid,
             });
+            navigate("/chat", {
+              state: { user: user.displayName, uid: user.uid },
+            });
           } else if (temp[0].email === user.email) {
-            setEmailExists(true);
-            console.log("User has already been added to the list");
+            navigate("/chat", {
+              state: { user: user.displayName, uid: user.uid },
+            });
           }
         });
       })
       .catch((error: any) => {
-        // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(`Error[${errorCode}]: ${errorMessage}`);
+      });
+  };
 
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
+  const handleGoogleSignOut = () => {
+    signOut(auth)
+      .then((response) => {
+        console.log(response);
+        // setIsSignedIn(false);
+        // Sign-out successful.
+      })
+      .catch((error) => {
+        console.log(error);
+        // An error happened.
       });
   };
 
@@ -84,12 +104,32 @@ const Login: React.FC = () => {
 
   return (
     <Layout className="layout-login">
+      <Col
+        style={{ flexDirection: "column", justifyContent: "center" }}
+        className="layout-login-header"
+      >
+        {/* <Text strong={true} className="header">
+          Minoot
+        </Text> */}
+        <Carousel autoplay dots={false} style={{ marginBottom: "3%" }}>
+          <Text strong={true} className="header">
+            Did your connection drop during a meeting?
+          </Text>
+          <Text strong={true} className="header">
+            Is a call starting without you?
+          </Text>
+          <Text strong={true} className="header">
+            Need a summary of everything that went down?
+          </Text>
+        </Carousel>
+        <Row style={{ justifyContent: "center" }}>
+          <Text strong={true} className="header" style={{ fontSize: "40px" }}>
+            Minoot is your new buddy for planning
+          </Text>
+        </Row>
+      </Col>
       <Card bordered={false} className="modal-login">
-        <Title level={3} className="modal-login-title">
-          Welcome
-        </Title>
-
-        <Form
+        {/* <Form
           name="basic"
           labelCol={{ span: 8 }}
           style={{ margin: "15px 0" }}
@@ -125,14 +165,6 @@ const Login: React.FC = () => {
             <Checkbox>Remember me</Checkbox>
           </Form.Item>
 
-          <Button
-            type="primary"
-            size={"large"}
-            onClick={() => handleGooglePopup()}
-          >
-            Google
-          </Button>
-
           <Form.Item style={{ marginTop: "-10px" }}>
             <Button
               type="primary"
@@ -144,18 +176,17 @@ const Login: React.FC = () => {
             </Button>
           </Form.Item>
         </Form>
-      </Card>
 
-      <Modal
-        open={emailExists}
-        onCancel={() => setEmailExists(false)}
-        cancelButtonProps={null}
-        centered={true}
-      >
-        <Title level={3} style={{ textAlign: "center" }}>
-          This email is already being used.
-        </Title>
-      </Modal>
+        <Divider style={{ color: "white" }}> or </Divider> */}
+
+        <Button
+          size={"large"}
+          block={true}
+          onClick={() => handleGoogleSignInPopup()}
+        >
+          <GoogleOutlined />
+        </Button>
+      </Card>
     </Layout>
   );
 };
