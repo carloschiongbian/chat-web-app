@@ -11,7 +11,8 @@
     .header {
       margin: 0;
       padding: 0;
-      font-size: 50px;
+      // font-size: 50px;
+      font-size: 4rem;
       color: white;
       text-align: center;
     }
@@ -33,3 +34,26 @@
     }
   }
 }
+
+@media only screen and (max-width: 979px) {
+  .layout-login {
+    .layout-login-header {
+      margin-top: 3rem;
+
+      .header {
+        font-size: 2rem;
+      }
+    }
+  }
+}
+
+// @media only screen and (max-width: 860px) {
+//   .layout-login {
+//     .layout-login-header {
+//       .header {
+//         font-size: 2rem;
+//         background-color: red;
+//       }
+//     }
+//   }
+// }

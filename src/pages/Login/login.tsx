@@ -111,7 +111,7 @@ const Login: React.FC = () => {
         {/* <Text strong={true} className="header">
           Minoot
         </Text> */}
-        <Carousel autoplay dots={false} style={{ marginBottom: "3%" }}>
+        <Carousel autoplay dots={false}>
           <Text strong={true} className="header">
             Did your connection drop during a meeting?
           </Text>
