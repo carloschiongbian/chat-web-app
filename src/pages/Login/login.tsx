@@ -121,6 +121,9 @@ const Login: React.FC = () => {
           <Text strong={true} className="header">
             Need a summary of everything that went down?
           </Text>
+          <Text strong={true} className="header">
+            Do you need your... meeting minutes?
+          </Text>
         </Carousel>
         <Row style={{ justifyContent: "center" }}>
           <Text strong={true} className="header" style={{ fontSize: "40px" }}>
