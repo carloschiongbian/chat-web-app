@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Avatar, MenuProps, Skeleton, Spin } from "antd";
+import { Avatar, Button, Col, MenuProps, Spin } from "antd";
 import { Row, Layout, Menu, Typography, Input } from "antd";
 import {
   MessageOutlined,
   UserOutlined,
   SendOutlined,
   LoadingOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
 import "./chat.scss";
 import { getMessages, sendMessage } from "../../firebase/firestore";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getAuth, signOut } from "firebase/auth";
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -33,10 +36,14 @@ function getItem(
 const items: MenuItem[] = [getItem("Chat", "1", <MessageOutlined />)];
 
 const Chat: React.FC = () => {
+  const auth = getAuth();
+  const navigate = useNavigate();
   const [input, setInput] = useState<any>("");
   const [messages, setMessages] = useState<any>([]);
   const [collapsed, setCollapsed] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const location = useLocation();
+  console.log(location);
 
   const retrieveData = async () => {
     setIsLoading(true);
@@ -80,6 +87,18 @@ const Chat: React.FC = () => {
     sendMessage(message);
   };
 
+  const handleGoogleSignOut = () => {
+    signOut(auth)
+      .then((response) => {
+        console.log(response);
+        console.log("logged out");
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log("Error: ", error);
+      });
+  };
+
   const onEnter = (event: any) => {
     const whiteSpaceTest = /^\s*$/;
     const message = event?.target?.value || " ";
@@ -102,12 +121,13 @@ const Chat: React.FC = () => {
 
   useEffect(() => {
     retrieveData();
-  }, []);
+  }, [onEnter]);
 
   return (
     <Layout className="layout-chat">
       <Sider
         collapsible
+        className="sider"
         collapsed={collapsed}
         style={{ backgroundColor: "#16213e" }}
         onCollapse={(value) => setCollapsed(value)}
@@ -115,7 +135,7 @@ const Chat: React.FC = () => {
         {!collapsed && (
           <div className="sider-header">
             <Title level={2} className="sider-header-title">
-              Convo
+              Minoot
             </Title>
           </div>
         )}
@@ -127,6 +147,26 @@ const Chat: React.FC = () => {
           mode="inline"
           items={items}
         />
+
+        <Row style={{ height: "100%" }}>
+          {!collapsed ? (
+            <Button
+              size="large"
+              icon={<LogoutOutlined />}
+              className="logout-button"
+              onClick={() => handleGoogleSignOut()}
+            >
+              Log Out
+            </Button>
+          ) : (
+            <Button
+              size="large"
+              icon={<LogoutOutlined />}
+              className="logout-button"
+              onClick={() => handleGoogleSignOut()}
+            />
+          )}
+        </Row>
       </Sider>
 
       <Layout className="content-layout">
