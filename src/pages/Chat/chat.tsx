@@ -43,7 +43,7 @@ const Chat: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const location = useLocation();
-  console.log(location);
+  // console.log(location);
 
   const retrieveData = async () => {
     setIsLoading(true);
@@ -121,7 +121,7 @@ const Chat: React.FC = () => {
 
   useEffect(() => {
     retrieveData();
-  }, [onEnter]);
+  }, []);
 
   return (
     <Layout className="layout-chat">
@@ -148,7 +148,7 @@ const Chat: React.FC = () => {
           items={items}
         />
 
-        <Row style={{ height: "100%" }}>
+        <Row>
           {!collapsed ? (
             <Button
               size="large"

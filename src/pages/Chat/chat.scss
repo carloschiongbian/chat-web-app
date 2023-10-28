@@ -33,6 +33,27 @@
 
     .content-chat {
       margin: 10px 16px;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      padding-right: 10px;
+
+      &::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: #16213e;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: #19376d;
+        border-radius: 10px;
+      }
+
+      &::-webkit-scrollbar-corner {
+        background: #f1f1f1;
+        border-radius: 10px;
+      }
 
       .message-bubble {
         margin-block: 10px;
