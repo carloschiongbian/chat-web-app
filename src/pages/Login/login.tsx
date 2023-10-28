@@ -79,7 +79,6 @@ const Login: React.FC = () => {
         console.log(`Error[${errorCode}]: ${errorMessage}`);
       });
   };
-  navigate("/chat");
 
   const handleGoogleSignOut = () => {
     signOut(auth)
