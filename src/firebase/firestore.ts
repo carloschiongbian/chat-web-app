@@ -86,7 +86,8 @@ export const getMessages = async (setMessages: any) => {
           id: new Date().getTime(),
           date: doc.data().date,
           content: doc.data().content,
-          sender: doc.data().sender,
+          sender_id: doc.data().sender_id,
+          sender_name: doc.data().sender_name,
         });
       });
 

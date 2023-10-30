@@ -66,33 +66,60 @@ const Chat: React.FC = () => {
   // };
 
   const renderMessageContainer = (message: any, index: any) => {
-    const fromUser = message.sender === user.id;
+    const fromUser = message.sender_id === user.id;
 
     return (
-      <Row
-        className="message-bubble"
-        wrap={false}
-        key={index}
-        style={{
-          justifyContent: fromUser ? "flex-start" : "flex-end",
-        }}
-      >
-        {fromUser ? (
-          <>
-            <Avatar shape="square" icon={<UserOutlined />} />
-            <Row className="content-chat-message" wrap={true}>
-              <p>{message.content}</p>
+      <>
+        <Row
+          style={{
+            marginBlock: "3px",
+            justifyContent: fromUser ? "flex-end" : "flex-start",
+            color: "white",
+            paddingRight: fromUser ? "55px" : 0,
+            paddingLeft: fromUser ? 0 : "55px",
+          }}
+        >
+          {message.sender_name}
+        </Row>
+        <Row
+          className="message-bubble"
+          wrap={false}
+          key={index}
+          style={{ justifyContent: fromUser ? "flex-end" : "flex-start" }}
+        >
+          {fromUser ? (
+            <>
+              <Row
+                wrap={false}
+                style={{
+                  columnGap: "5px",
+                  width: "30%",
+                  justifyContent: fromUser ? "flex-end" : "flex-start",
+                }}
+              >
+                <Row className="content-chat-message" wrap={true}>
+                  <p>{message.content}</p>
+                </Row>
+                <Avatar size={50} shape="square" icon={<UserOutlined />} />
+              </Row>
+            </>
+          ) : (
+            <Row
+              style={{
+                columnGap: "5px",
+                width: "30%",
+                justifyContent: fromUser ? "flex-end" : "flex-start",
+              }}
+            >
+              {/* <Row wrap={true}>{message.sender_name}</Row> */}
+              <Avatar size={50} shape="square" icon={<UserOutlined />} />
+              <Row className="content-chat-message" wrap={true}>
+                <p>{message.content}</p>
+              </Row>
             </Row>
-          </>
-        ) : (
-          <>
-            <Row className="content-chat-message" wrap={true}>
-              <p>{message.content}</p>
-            </Row>
-            <Avatar size={50} shape="square" icon={<UserOutlined />} />
-          </>
-        )}
-      </Row>
+          )}
+        </Row>
+      </>
     );
   };
 
@@ -123,7 +150,8 @@ const Chat: React.FC = () => {
       const sentMessage = {
         id: new Date().getTime(),
         date: new Date(),
-        sender: user.id,
+        sender_id: user.id,
+        sender_name: user.name,
         content: !whiteSpaceTest.test(message) ? message : input,
       };
       handleSendMessage(sentMessage);
@@ -139,7 +167,8 @@ const Chat: React.FC = () => {
           id: new Date().getTime(),
           date: doc.data().date,
           content: doc.data().content,
-          sender: doc.data().sender,
+          sender_id: doc.data().sender_id,
+          sender_name: doc.data().sender_name,
         });
       });
 
