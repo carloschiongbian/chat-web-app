@@ -10,8 +10,16 @@ import {
 } from "@ant-design/icons";
 import "./chat.scss";
 import { getMessages, sendMessage } from "../../firebase/firestore";
-import { useLocation, useNavigate } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useRoutes,
+} from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
+import { firebaseConfig } from "../../firebase/config";
+import { initializeApp } from "firebase/app";
+import { collection, getFirestore, onSnapshot } from "firebase/firestore";
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -42,28 +50,33 @@ const Chat: React.FC = () => {
   const [messages, setMessages] = useState<any>([]);
   const [collapsed, setCollapsed] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const location = useLocation();
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const messagesRef = collection(db, "messages");
+  const localStorageTemp: any = localStorage.getItem("user");
+  const user = JSON.parse(localStorageTemp);
 
-  const retrieveData = async () => {
-    setIsLoading(true);
-    const response = await getMessages(setMessages);
+  // const retrieveData = async () => {
+  //   setIsLoading(true);
+  //   const response = await getMessages(setMessages);
 
-    if (response.status === 200) {
-      setIsLoading(false);
-    }
-  };
+  //   if (response.status === 200) {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   const renderMessageContainer = (message: any, index: any) => {
+    const fromUser = message.sender === user.id;
     return (
       <Row
         className="message-bubble"
         wrap={false}
         key={index}
         style={{
-          justifyContent: message.fromOthers ? "flex-start" : "flex-end",
+          justifyContent: fromUser ? "flex-start" : "flex-end",
         }}
       >
-        {message.fromOthers ? (
+        {fromUser ? (
           <>
             <Avatar shape="square" icon={<UserOutlined />} />
             <Row className="content-chat-message" wrap={true}>
@@ -82,7 +95,7 @@ const Chat: React.FC = () => {
     );
   };
 
-  const handleSendMessage = (message: any) => {
+  const handleSendMessage = async (message: any) => {
     sendMessage(message);
   };
 
@@ -109,17 +122,28 @@ const Chat: React.FC = () => {
       const sentMessage = {
         id: new Date().getTime(),
         date: new Date(),
-        fromOthers: false,
+        sender: user.id,
         content: !whiteSpaceTest.test(message) ? message : input,
       };
       handleSendMessage(sentMessage);
-      retrieveData();
       setInput(undefined);
     }
   };
 
   useEffect(() => {
-    retrieveData();
+    onSnapshot(messagesRef, (snapshot) => {
+      let docs: any = [];
+      snapshot.docs.map((doc: any) => {
+        docs.push({
+          id: new Date().getTime(),
+          date: doc.data().date,
+          content: doc.data().content,
+          fromOthers: doc.data().fromOthers,
+        });
+      });
+
+      setMessages(docs.sort((a: any, b: any) => a.date - b.date));
+    });
   }, []);
 
   return (
@@ -133,8 +157,8 @@ const Chat: React.FC = () => {
       >
         {!collapsed && (
           <div className="sider-header">
-            <Title level={2} className="sider-header-title">
-              Minoot
+            <Title level={5} className="sider-header-title">
+              What's The Tea 🍵
             </Title>
           </div>
         )}
@@ -200,7 +224,7 @@ const Chat: React.FC = () => {
             value={input}
             id="chat-input"
             bordered={false}
-            autoSize={{ minRows: 0, maxRows: 6 }}
+            autoSize
             onPressEnter={(event) => onEnter(event)}
             onChange={(event) => setInput(event.target?.value)}
           />

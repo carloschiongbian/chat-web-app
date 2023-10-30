@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  CheckCircleOutlined,
   EyeInvisibleOutlined,
   EyeTwoTone,
   GoogleOutlined,
@@ -29,6 +30,7 @@ import { addDoc, collection, getDocs, getFirestore } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../../firebase/config";
 import { UserContext } from "../../context/context";
+import { verifyAccessCode } from "../../firebase/firestore";
 
 const { Title, Text } = Typography;
 
@@ -36,6 +38,7 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const [code, setCode] = useState<number>();
   const [isVerified, setIsVerified] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isLogged, setIsLogged] = useState<boolean>(false);
   const [emailExists, setEmailExists] = useState<boolean>(false);
 
@@ -51,17 +54,38 @@ const Login: React.FC = () => {
     return snapshot.docs.map((snapshot: any) => snapshot.data());
   };
 
-  const verifyCode = (input: any) => {
-    if (!isNaN(Number(input))) {
-      setCode(input);
-    }
-  };
+  // const handleVerification = async (code: number | undefined) => {
+  //   setIsLoading(true);
+  //   const result = await verifyAccessCode(code);
+  //   console.log(result);
+  //   if (result?.status === 200) {
+  //     setTimeout(() => {
+  //       setIsVerified(true);
+  //       setIsLoading(false);
+  //     }, 1000);
+  //   } else {
+  //     setTimeout(() => {
+  //       setIsLoading(false);
+  //     }, 1000);
+  //   }
+  // };
+
+  // const verifyCode = (input: any) => {
+  //   if (!isNaN(Number(input))) {
+  //     setCode(input);
+  //   }
+  // };
 
   const handleGoogleSignInPopup = () => {
     signInWithPopup(auth, provider)
       .then((result: any) => {
         const user = result.user;
+        console.log("user: ", user);
 
+        const userDetails = {
+          id: user.uid,
+          name: user.displayName,
+        };
         getEmails().then((result: any) => {
           const temp = result.filter((docs: any) => docs.email === user.email);
 
@@ -71,13 +95,11 @@ const Login: React.FC = () => {
               name: user.displayName,
               uid: user.uid,
             });
-            navigate("/chat", {
-              state: { user: user.displayName, uid: user.uid },
-            });
+            localStorage.setItem("user", JSON.stringify(userDetails));
+            navigate("/chat");
           } else if (temp[0].email === user.email) {
-            navigate("/chat", {
-              state: { user: user.displayName, uid: user.uid },
-            });
+            localStorage.setItem("user", JSON.stringify(userDetails));
+            navigate("/chat");
           }
         });
       })
@@ -101,9 +123,6 @@ const Login: React.FC = () => {
       });
   };
 
-  const handleVerification = (code: number | undefined) => {
-    setIsVerified(true);
-  };
   const onFinish = (values: any) => {
     console.log("Success:", values);
     navigate("/chat");
@@ -140,7 +159,7 @@ const Login: React.FC = () => {
             Do you need your... meeting minutes?
           </Text>
         </Carousel> */}
-        {!isVerified && (
+        {/* {!isVerified && (
           <Row
             style={{
               justifyContent: "center",
@@ -157,42 +176,38 @@ const Login: React.FC = () => {
               maxLength={6}
             />
             <Button
+              icon={isVerified ? <CheckCircleOutlined /> : null}
               type="primary"
+              loading={isLoading}
               style={{ backgroundColor: "#16213e" }}
               onClick={() => handleVerification(code)}
             >
               Verify
             </Button>
           </Row>
-        )}
-        {isVerified && (
-          <Col>
-            <Row
-              style={{ justifyContent: "center", backgroundColor: "yellow" }}
-            >
-              {/* <Text strong={true} className="header" style={{ fontSize: "40px" }}>
+        )} */}
+        {/* {isVerified && ( */}
+        <Col>
+          <Row style={{ justifyContent: "center" }}>
+            {/* <Text strong={true} className="header" style={{ fontSize: "40px" }}>
               Minoot is your new buddy for planning
             </Text> */}
-              <Text
-                strong={true}
-                className="header"
-                style={{ fontSize: "40px" }}
-              >
-                What's the 🍵?
-              </Text>
-            </Row>
+            <Text strong={true} className="header" style={{ fontSize: "40px" }}>
+              What's the 🍵?
+            </Text>
+          </Row>
 
-            <Card bordered={false} className="modal-login">
-              <Button
-                size={"large"}
-                block={true}
-                onClick={() => handleGoogleSignInPopup()}
-              >
-                <GoogleOutlined />
-              </Button>
-            </Card>
-          </Col>
-        )}
+          <Card bordered={false} className="modal-login">
+            <Button
+              size={"large"}
+              block={true}
+              onClick={() => handleGoogleSignInPopup()}
+            >
+              <GoogleOutlined />
+            </Button>
+          </Card>
+        </Col>
+        {/* )} */}
       </Col>
     </Layout>
   );
