@@ -143,7 +143,7 @@ const Login: React.FC = () => {
         }}
       >
         {/* <Text strong={true} className="header">
-          Minoot
+          
         </Text> */}
         {/* <Carousel autoplay dots={false}>
           <Text strong={true} className="header">

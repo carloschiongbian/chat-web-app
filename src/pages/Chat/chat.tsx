@@ -67,7 +67,13 @@ const Chat: React.FC = () => {
 
   const renderMessageContainer = (message: any, index: any) => {
     const fromUser = message.sender_id === user.id;
+    let name = message.sender_name.split(" ");
 
+    if (name.length > 1) {
+      name = `${name[0][0]} ${name[1][0]}`;
+    } else {
+      name = `${name[0][0]} ${name[0][1]}`;
+    }
     return (
       <>
         <Row
@@ -100,7 +106,9 @@ const Chat: React.FC = () => {
                 <Row className="content-chat-message" wrap={true}>
                   <p>{message.content}</p>
                 </Row>
-                <Avatar size={50} shape="square" icon={<UserOutlined />} />
+                <Avatar size={50} shape="square">
+                  {name}
+                </Avatar>
               </Row>
             </>
           ) : (
@@ -111,8 +119,9 @@ const Chat: React.FC = () => {
                 justifyContent: fromUser ? "flex-end" : "flex-start",
               }}
             >
-              {/* <Row wrap={true}>{message.sender_name}</Row> */}
-              <Avatar size={50} shape="square" icon={<UserOutlined />} />
+              <Avatar size={50} shape="square">
+                {name}
+              </Avatar>
               <Row className="content-chat-message" wrap={true}>
                 <p>{message.content}</p>
               </Row>
