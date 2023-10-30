@@ -101,7 +101,6 @@ const Chat: React.FC = () => {
               <Row
                 wrap={false}
                 style={{
-                  backgroundColor: "red",
                   columnGap: "5px",
                   width: "30%",
                   justifyContent: fromUser ? "flex-end" : "flex-start",
