@@ -67,6 +67,7 @@ const Chat: React.FC = () => {
 
   const renderMessageContainer = (message: any, index: any) => {
     const fromUser = message.sender === user.id;
+
     return (
       <Row
         className="message-bubble"
@@ -138,7 +139,7 @@ const Chat: React.FC = () => {
           id: new Date().getTime(),
           date: doc.data().date,
           content: doc.data().content,
-          fromOthers: doc.data().fromOthers,
+          sender: doc.data().sender,
         });
       });
 
