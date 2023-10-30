@@ -77,6 +77,7 @@ const Chat: React.FC = () => {
     return (
       <>
         <Row
+          wrap={false}
           style={{
             marginBlock: "3px",
             justifyContent: fromUser ? "flex-end" : "flex-start",
@@ -91,13 +92,16 @@ const Chat: React.FC = () => {
           className="message-bubble"
           wrap={false}
           key={index}
-          style={{ justifyContent: fromUser ? "flex-end" : "flex-start" }}
+          style={{
+            justifyContent: fromUser ? "flex-end" : "flex-start",
+          }}
         >
           {fromUser ? (
             <>
               <Row
                 wrap={false}
                 style={{
+                  backgroundColor: "red",
                   columnGap: "5px",
                   width: "30%",
                   justifyContent: fromUser ? "flex-end" : "flex-start",
