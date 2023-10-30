@@ -43,7 +43,6 @@ const Chat: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const location = useLocation();
-  // console.log(location);
 
   const retrieveData = async () => {
     setIsLoading(true);
@@ -76,7 +75,7 @@ const Chat: React.FC = () => {
             <Row className="content-chat-message" wrap={true}>
               <p>{message.content}</p>
             </Row>
-            <Avatar shape="square" icon={<UserOutlined />} />
+            <Avatar size={50} shape="square" icon={<UserOutlined />} />
           </>
         )}
       </Row>

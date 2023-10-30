@@ -26,89 +26,89 @@ export const getMessages = async (setMessages: any) => {
         });
       });
 
-      // setMessages(temp.sort((a: any, b: any) => a.date - b.date));
-      setMessages([
-        {
-          content: "hi",
-          fromOthers: false,
-        },
-        {
-          content: "hi",
-          fromOthers: false,
-        },
-        {
-          content: "hi",
-          fromOthers: false,
-        },
-        {
-          content: "hi",
-          fromOthers: false,
-        },
-        {
-          content: "hi",
-          fromOthers: false,
-        },
-        {
-          content: "hi",
-          fromOthers: false,
-        },
-        {
-          content: "hi",
-          fromOthers: false,
-        },
-        {
-          content: "hi",
-          fromOthers: false,
-        },
-        {
-          content: "hi",
-          fromOthers: false,
-        },
-        {
-          content: "hi",
-          fromOthers: false,
-        },
-        {
-          content: "hi",
-          fromOthers: false,
-        },
-        {
-          content: "hi",
-          fromOthers: false,
-        },
-        {
-          content: "hi",
-          fromOthers: false,
-        },
-        {
-          content: "hi",
-          fromOthers: false,
-        },
-        {
-          content: "hi",
-          fromOthers: false,
-        },
-        {
-          content: "hi",
-          fromOthers: false,
-        },
-        {
-          content: "hi",
-          fromOthers: false,
-        },
-        {
-          content: "hi",
-          fromOthers: false,
-        },
-        {
-          content: "hi",
-          fromOthers: false,
-        },
-        {
-          content: "hi",
-          fromOthers: false,
-        },
-      ]);
+      setMessages(temp.sort((a: any, b: any) => a.date - b.date));
+      // setMessages([
+      //   {
+      //     content: "hi",
+      //     fromOthers: false,
+      //   },
+      //   {
+      //     content: "hi",
+      //     fromOthers: false,
+      //   },
+      //   {
+      //     content: "hi",
+      //     fromOthers: false,
+      //   },
+      //   {
+      //     content: "hi",
+      //     fromOthers: false,
+      //   },
+      //   {
+      //     content: "hi",
+      //     fromOthers: false,
+      //   },
+      //   {
+      //     content: "hi",
+      //     fromOthers: false,
+      //   },
+      //   {
+      //     content: "hi",
+      //     fromOthers: false,
+      //   },
+      //   {
+      //     content: "hi",
+      //     fromOthers: false,
+      //   },
+      //   {
+      //     content: "hi",
+      //     fromOthers: false,
+      //   },
+      //   {
+      //     content: "hi",
+      //     fromOthers: false,
+      //   },
+      //   {
+      //     content: "hi",
+      //     fromOthers: false,
+      //   },
+      //   {
+      //     content: "hi",
+      //     fromOthers: false,
+      //   },
+      //   {
+      //     content: "hi",
+      //     fromOthers: false,
+      //   },
+      //   {
+      //     content: "hi",
+      //     fromOthers: false,
+      //   },
+      //   {
+      //     content: "hi",
+      //     fromOthers: false,
+      //   },
+      //   {
+      //     content: "hi",
+      //     fromOthers: false,
+      //   },
+      //   {
+      //     content: "hi",
+      //     fromOthers: false,
+      //   },
+      //   {
+      //     content: "hi",
+      //     fromOthers: false,
+      //   },
+      //   {
+      //     content: "hi",
+      //     fromOthers: false,
+      //   },
+      //   {
+      //     content: "hi",
+      //     fromOthers: false,
+      //   },
+      // ]);
     });
 
     return {

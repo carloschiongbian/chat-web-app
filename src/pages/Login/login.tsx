@@ -34,6 +34,8 @@ const { Title, Text } = Typography;
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const [code, setCode] = useState<number>();
+  const [isVerified, setIsVerified] = useState(false);
   const [isLogged, setIsLogged] = useState<boolean>(false);
   const [emailExists, setEmailExists] = useState<boolean>(false);
 
@@ -47,6 +49,12 @@ const Login: React.FC = () => {
   const getEmails = async () => {
     const snapshot = await getDocs(usersRef);
     return snapshot.docs.map((snapshot: any) => snapshot.data());
+  };
+
+  const verifyCode = (input: any) => {
+    if (!isNaN(Number(input))) {
+      setCode(input);
+    }
   };
 
   const handleGoogleSignInPopup = () => {
@@ -93,6 +101,9 @@ const Login: React.FC = () => {
       });
   };
 
+  const handleVerification = (code: number | undefined) => {
+    setIsVerified(true);
+  };
   const onFinish = (values: any) => {
     console.log("Success:", values);
     navigate("/chat");
@@ -105,13 +116,17 @@ const Login: React.FC = () => {
   return (
     <Layout className="layout-login">
       <Col
-        style={{ flexDirection: "column", justifyContent: "center" }}
         className="layout-login-header"
+        style={{
+          flexDirection: "column",
+          justifyContent: "center",
+          height: "100%",
+        }}
       >
         {/* <Text strong={true} className="header">
           Minoot
         </Text> */}
-        <Carousel autoplay dots={false}>
+        {/* <Carousel autoplay dots={false}>
           <Text strong={true} className="header">
             Did your connection drop during a meeting?
           </Text>
@@ -124,72 +139,61 @@ const Login: React.FC = () => {
           <Text strong={true} className="header">
             Do you need your... meeting minutes?
           </Text>
-        </Carousel>
-        <Row style={{ justifyContent: "center" }}>
-          <Text strong={true} className="header" style={{ fontSize: "40px" }}>
-            Minoot is your new buddy for planning
-          </Text>
-        </Row>
-      </Col>
-      <Card bordered={false} className="modal-login">
-        {/* <Form
-          name="basic"
-          labelCol={{ span: 8 }}
-          style={{ margin: "15px 0" }}
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-        >
-          <Form.Item
-            name="username"
-            style={{ marginBottom: "20px" }}
-            rules={[{ required: true, message: "Please input your email" }]}
+        </Carousel> */}
+        {!isVerified && (
+          <Row
+            style={{
+              justifyContent: "center",
+              rowGap: "10px",
+              fontWeight: "bold",
+            }}
           >
-            <Input placeholder="Email" />
-          </Form.Item>
-          <Form.Item
-            name="password"
-            style={{ marginBottom: "30px" }}
-            rules={[{ required: true, message: "Please input your password" }]}
-          >
-            <Input.Password
-              placeholder="Password"
-              iconRender={(visible) =>
-                visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-              }
+            <Input
+              placeholder="Enter your code"
+              value={code}
+              size="large"
+              style={{ outline: "none" }}
+              onChange={(e) => verifyCode(e.target.value)}
+              maxLength={6}
             />
-          </Form.Item>
-          <Form.Item
-            name="remember"
-            valuePropName="checked"
-            style={{ marginTop: "-10px" }}
-          >
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
-
-          <Form.Item style={{ marginTop: "-10px" }}>
             <Button
               type="primary"
-              htmlType="submit"
-              block={true}
-              style={{ backgroundColor: "#400d51" }}
+              style={{ backgroundColor: "#16213e" }}
+              onClick={() => handleVerification(code)}
             >
-              Submit
+              Verify
             </Button>
-          </Form.Item>
-        </Form>
+          </Row>
+        )}
+        {isVerified && (
+          <Col>
+            <Row
+              style={{ justifyContent: "center", backgroundColor: "yellow" }}
+            >
+              {/* <Text strong={true} className="header" style={{ fontSize: "40px" }}>
+              Minoot is your new buddy for planning
+            </Text> */}
+              <Text
+                strong={true}
+                className="header"
+                style={{ fontSize: "40px" }}
+              >
+                What's the 🍵?
+              </Text>
+            </Row>
 
-        <Divider style={{ color: "white" }}> or </Divider> */}
-
-        <Button
-          size={"large"}
-          block={true}
-          onClick={() => handleGoogleSignInPopup()}
-        >
-          <GoogleOutlined />
-        </Button>
-      </Card>
+            <Card bordered={false} className="modal-login">
+              <Button
+                size={"large"}
+                block={true}
+                onClick={() => handleGoogleSignInPopup()}
+              >
+                <GoogleOutlined />
+              </Button>
+            </Card>
+          </Col>
+        )}
+      </Col>
     </Layout>
   );
 };
