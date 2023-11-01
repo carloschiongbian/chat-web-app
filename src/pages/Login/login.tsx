@@ -1,11 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  CheckCircleOutlined,
-  EyeInvisibleOutlined,
-  EyeTwoTone,
-  GoogleOutlined,
-} from "@ant-design/icons";
+import { GoogleOutlined } from "@ant-design/icons";
 import {
   Layout,
   Card,
@@ -26,27 +21,22 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-import { addDoc, collection, getDocs, getFirestore } from "firebase/firestore";
-import { initializeApp } from "firebase/app";
-import { firebaseConfig } from "../../firebase/config";
-import { UserContext } from "../../context/context";
-import { verifyAccessCode } from "../../firebase/firestore";
+import { addDoc, collection, getDocs } from "firebase/firestore";
+import { db } from "../../firebase/config";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-  const [code, setCode] = useState<number>();
-  const [isVerified, setIsVerified] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isLogged, setIsLogged] = useState<boolean>(false);
-  const [emailExists, setEmailExists] = useState<boolean>(false);
+  // const [code, setCode] = useState<number>();
+  // const [isVerified, setIsVerified] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [isLogged, setIsLogged] = useState<boolean>(false);
+  // const [emailExists, setEmailExists] = useState<boolean>(false);
 
   const provider = new GoogleAuthProvider();
   const auth = getAuth();
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
   const usersRef = collection(db, "users");
 
   const getEmails = async () => {

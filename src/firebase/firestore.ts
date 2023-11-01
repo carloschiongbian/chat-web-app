@@ -1,19 +1,14 @@
 // Import the functions you need from the SDKs you need
-import { firebaseConfig } from "./config";
-import { initializeApp } from "firebase/app";
+import { db } from "./config";
 import {
-  getFirestore,
   collection,
   getDocs,
-  onSnapshot,
   addDoc,
   updateDoc,
   doc,
 } from "firebase/firestore";
 import * as firebase from "firebase/app";
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 const messagesRef = collection(db, "messages");
 const accessCodesRef = collection(db, "access_codes");
 

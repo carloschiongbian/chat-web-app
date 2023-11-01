@@ -17,7 +17,7 @@ import {
   useRoutes,
 } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
-import { firebaseConfig } from "../../firebase/config";
+import { db, firebaseConfig } from "../../firebase/config";
 import { initializeApp } from "firebase/app";
 import { collection, getFirestore, onSnapshot } from "firebase/firestore";
 
@@ -49,21 +49,11 @@ const Chat: React.FC = () => {
   const [input, setInput] = useState<any>("");
   const [messages, setMessages] = useState<any>([]);
   const [collapsed, setCollapsed] = useState(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+  const location = useLocation();
+
   const messagesRef = collection(db, "messages");
   const localStorageTemp: any = localStorage.getItem("user");
   const user = JSON.parse(localStorageTemp);
-
-  // const retrieveData = async () => {
-  //   setIsLoading(true);
-  //   const response = await getMessages(setMessages);
-
-  //   if (response.status === 200) {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   const renderMessageContainer = (message: any, index: any) => {
     const fromUser = message.sender_id === user.id;
@@ -170,6 +160,25 @@ const Chat: React.FC = () => {
       setInput(undefined);
     }
   };
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      // This event handler will run when the user navigates away from the current page.
+      // You can use it to perform actions or show a confirmation prompt if needed.
+      // You can access the event object to customize the behavior.
+      const confirmationMessage = "Are you sure you want to leave this page?";
+      console.log("leaving page");
+      // Uncomment the line below to show a confirmation dialog.
+      // event.returnValue = confirmationMessage;
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      // Clean up the event listener when the component unmounts.
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
 
   useEffect(() => {
     onSnapshot(messagesRef, (snapshot) => {
