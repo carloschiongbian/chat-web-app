@@ -56,7 +56,7 @@ const Chat: React.FC = () => {
   const user = JSON.parse(localStorageTemp);
 
   const renderMessageContainer = (message: any, index: any) => {
-    const fromUser = message.sender_id === user.id;
+    const fromUser = user && message.sender_id === user?.id;
     let name = message.sender_name.split(" ");
 
     if (name.length > 1) {
@@ -152,7 +152,7 @@ const Chat: React.FC = () => {
       const sentMessage = {
         id: new Date().getTime(),
         date: new Date(),
-        sender_id: user.id,
+        sender_id: user?.id,
         sender_name: user.name,
         content: !whiteSpaceTest.test(message) ? message : input,
       };
