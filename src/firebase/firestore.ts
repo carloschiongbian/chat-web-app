@@ -1,4 +1,3 @@
-// Import the functions you need from the SDKs you need
 import { db } from "./config";
 import {
   collection,
@@ -42,7 +41,6 @@ export const verifyAccessCode = async (code: number | undefined) => {
 
     console.log("document: ", document);
     if (!document.used) {
-      // const ref = docRef.get();
       const docRef = doc(db, "access_codes", document.id);
       const docObject = {
         id: document.id,

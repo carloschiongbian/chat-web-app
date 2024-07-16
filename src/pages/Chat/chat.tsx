@@ -163,19 +163,19 @@ const Chat: React.FC = () => {
 
   useEffect(() => {
     const handleBeforeUnload = () => {
-      // This event handler will run when the user navigates away from the current page.
-      // You can use it to perform actions or show a confirmation prompt if needed.
-      // You can access the event object to customize the behavior.
+      
+      
+      
       const confirmationMessage = "Are you sure you want to leave this page?";
       console.log("leaving page");
-      // Uncomment the line below to show a confirmation dialog.
-      // event.returnValue = confirmationMessage;
+      
+      
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
-      // Clean up the event listener when the component unmounts.
+      
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);

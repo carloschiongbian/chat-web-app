@@ -28,11 +28,11 @@ const { Text } = Typography;
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-  // const [code, setCode] = useState<number>();
-  // const [isVerified, setIsVerified] = useState(false);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [isLogged, setIsLogged] = useState<boolean>(false);
-  // const [emailExists, setEmailExists] = useState<boolean>(false);
+  
+  
+  
+  
+  
 
   const provider = new GoogleAuthProvider();
   const auth = getAuth();
@@ -44,27 +44,27 @@ const Login: React.FC = () => {
     return snapshot.docs.map((snapshot: any) => snapshot.data());
   };
 
-  // const handleVerification = async (code: number | undefined) => {
-  //   setIsLoading(true);
-  //   const result = await verifyAccessCode(code);
-  //   console.log(result);
-  //   if (result?.status === 200) {
-  //     setTimeout(() => {
-  //       setIsVerified(true);
-  //       setIsLoading(false);
-  //     }, 1000);
-  //   } else {
-  //     setTimeout(() => {
-  //       setIsLoading(false);
-  //     }, 1000);
-  //   }
-  // };
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
-  // const verifyCode = (input: any) => {
-  //   if (!isNaN(Number(input))) {
-  //     setCode(input);
-  //   }
-  // };
+  
+  
+  
+  
+  
 
   const handleGoogleSignInPopup = () => {
     signInWithPopup(auth, provider)
@@ -104,12 +104,12 @@ const Login: React.FC = () => {
     signOut(auth)
       .then((response) => {
         console.log(response);
-        // setIsSignedIn(false);
-        // Sign-out successful.
+        
+        
       })
       .catch((error) => {
         console.log(error);
-        // An error happened.
+        
       });
   };
 
