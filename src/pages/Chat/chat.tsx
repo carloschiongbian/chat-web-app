@@ -96,7 +96,7 @@ const Chat: React.FC = () => {
                   justifyContent: fromUser ? "flex-end" : "flex-start",
                 }}
               >
-                <Row className="content-chat-message" wrap={true}>
+                <Row className="content-chat-message">
                   <p>{message.content}</p>
                 </Row>
                 <Avatar size={50} shape="square">
@@ -259,14 +259,19 @@ const Chat: React.FC = () => {
             className="content-chat-spinner"
             style={{
               display: "flex",
-              flexDirection: "row",
+              flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
             }}
           >
-            <Spin
-              indicator={<LoadingOutlined style={{ fontSize: 40 }} spin />}
+            <img
+              src={"/waiting-meme.png"}
+              alt="waiting-meme"
+              style={{ width: "250px", height: "200px" }}
             />
+            <Title level={4} style={{ color: "white" }}>
+              Waiting for a convo like...
+            </Title>
           </Content>
         )}
 
@@ -276,11 +281,16 @@ const Chat: React.FC = () => {
             id="chat-input"
             bordered={false}
             autoSize
+            onKeyDown={(event: any) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+              }
+            }}
             onPressEnter={(event) => onEnter(event)}
             onChange={(event) => setInput(event.target?.value)}
           />
           <Row className="send-button" onClick={() => onEnter(input)}>
-            <SendOutlined />
+            <SendOutlined style={{ color: "white" }} />
           </Row>
         </Row>
       </Layout>
