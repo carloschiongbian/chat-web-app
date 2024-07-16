@@ -162,7 +162,7 @@ const Chat: React.FC = () => {
   };
 
   useEffect(() => {
-    const handleBeforeUnload = (event) => {
+    const handleBeforeUnload = () => {
       // This event handler will run when the user navigates away from the current page.
       // You can use it to perform actions or show a confirmation prompt if needed.
       // You can access the event object to customize the behavior.
